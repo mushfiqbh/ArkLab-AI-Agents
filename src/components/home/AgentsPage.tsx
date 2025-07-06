@@ -8,6 +8,7 @@ import { initializeAgents } from "@/store/agentSlice";
 import { AgentCard } from "@/components/home/AgentCard";
 import { LoadingSpinner } from "@/components/general/LoadingSpinner";
 import { Agent } from "@/types/agent";
+import { AgentDetailsModal } from "./AgentDetailsModal";
 
 interface AgentsPageProps {
   initialAgents: Agent[];
@@ -110,6 +111,9 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
           </div>
         )}
       </div>
+
+      {/* Agent Details Modal */}
+      <AgentDetailsModal />
     </div>
   );
 }
