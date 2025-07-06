@@ -104,8 +104,8 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
                 : "w-full lg:w-2/3 mx-auto flex flex-col"
             }`}
           >
-            {agentsToRender.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
+            {agentsToRender.map((agent, index) => (
+              <AgentCard key={agent.id} agent={agent} index={index} />
             ))}
           </div>
         ) : (
