@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -25,36 +25,104 @@ export function AgentFilters() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { filters, agents } = useAppSelector((state) => state.agents);
   const [statusOpen, setStatusOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Get unique values for filter options
   const categories = [...new Set(agents.map((agent) => agent.category))];
   const statuses = [...new Set(agents.map((agent) => agent.status))];
   const pricingModels = [...new Set(agents.map((agent) => agent.pricingModel))];
 
+  // Update URL with current filters
+  const updateURL = (newFilters: typeof filters) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.search) {
+      params.set("search", newFilters.search);
+    }
+
+    if (newFilters.status.length > 0) {
+      params.set("status", newFilters.status.join(","));
+    }
+
+    if (newFilters.category.length > 0) {
+      params.set("category", newFilters.category.join(","));
+    }
+
+    if (newFilters.pricingModel) {
+      params.set("pricing", newFilters.pricingModel);
+    }
+
+    const paramString = params.toString();
+    const url = paramString ? `${pathname}?${paramString}` : pathname;
+
+    // Update URL without causing a full page reload
+    router.replace(url, { scroll: false });
+  };
+
+  // Initialize filters from URL on mount only
+  useEffect(() => {
+    if (!isInitialized) {
+      const urlSearch = searchParams.get("search") || "";
+      const urlStatus =
+        searchParams.get("status")?.split(",").filter(Boolean) || [];
+      const urlCategory =
+        searchParams.get("category")?.split(",").filter(Boolean) || [];
+      const urlPricing = searchParams.get("pricing") || "";
+
+      const urlFilters = {
+        search: urlSearch,
+        status: urlStatus,
+        category: urlCategory,
+        pricingModel: urlPricing,
+      };
+
+      // Only update if there are URL parameters
+      if (
+        urlSearch ||
+        urlStatus.length > 0 ||
+        urlCategory.length > 0 ||
+        urlPricing
+      ) {
+        dispatch(setFilters(urlFilters));
+      }
+
+      setIsInitialized(true);
+    }
+  }, [searchParams, dispatch, isInitialized]);
+
   const handleSearchChange = (value: string) => {
+    const newFilters = { ...filters, search: value };
     dispatch(setFilters({ search: value }));
+    updateURL(newFilters);
   };
 
   const handleStatusChange = (status: string, checked: boolean) => {
     const newStatuses = checked
       ? [...filters.status, status]
       : filters.status.filter((s) => s !== status);
+    const newFilters = { ...filters, status: newStatuses };
     dispatch(setFilters({ status: newStatuses }));
+    updateURL(newFilters);
   };
 
   const handleCategoryChange = (category: string, checked: boolean) => {
     const newCategories = checked
       ? [...filters.category, category]
       : filters.category.filter((c) => c !== category);
+    const newFilters = { ...filters, category: newCategories };
     dispatch(setFilters({ category: newCategories }));
+    updateURL(newFilters);
   };
 
   const handlePricingChange = (value: string) => {
     const pricingModel = value === "all" ? "" : value;
+    const newFilters = { ...filters, pricingModel };
     dispatch(setFilters({ pricingModel }));
+    updateURL(newFilters);
   };
 
   const handleClearFilters = () => {
