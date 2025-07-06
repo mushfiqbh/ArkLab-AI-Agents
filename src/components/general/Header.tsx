@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeToggle } from "./ThemeToggle";
 import { Sparkles } from "lucide-react";
 
 export function Header() {
@@ -17,7 +18,9 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">ThemeToggle</div>
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );
