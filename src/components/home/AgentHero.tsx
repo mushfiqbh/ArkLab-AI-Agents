@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
 
-export default function AgentHero() {
+export default function AgentHero({
+  scrollToContent,
+}: {
+  scrollToContent: () => void;
+}) {
   return (
     <div>
       {/* Enhanced Background Effects */}
@@ -77,6 +81,7 @@ export default function AgentHero() {
             >
               <Button
                 size="lg"
+                onClick={scrollToContent}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 Explore Agents

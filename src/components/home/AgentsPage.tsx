@@ -22,6 +22,13 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
   const { filteredAgents, loading } = useAppSelector((state) => state.agents);
   const initializedRef = useRef(false);
   const [viewType, setViewType] = useState("Grid");
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToContent = () => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     // Only initialize agents once
@@ -43,7 +50,9 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-indigo-900 relative overflow-hidden">
       {/* Enhanced Hero Section */}
-      <AgentHero />
+      <AgentHero scrollToContent={scrollToContent} />
+
+      <div ref={targetRef} className="w-full -translate-y-24" />
 
       <div className="container mx-auto px-4 pb-8 relative z-10">
         {/* Background blur effect for content section */}
