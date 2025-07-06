@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -9,22 +9,30 @@ import { AgentCard } from "@/components/home/AgentCard";
 import { LoadingSpinner } from "@/components/general/LoadingSpinner";
 import { Agent } from "@/types/agent";
 import { AgentDetailsModal } from "./AgentDetailsModal";
+import { AgentFilters } from "./AgentFilters";
 
 interface AgentsPageProps {
   initialAgents: Agent[];
 }
 
 export function AgentsPage({ initialAgents }: AgentsPageProps) {
-  const { loading } = useAppSelector((state) => state.agents);
   const dispatch = useAppDispatch();
+  const { filteredAgents, loading } = useAppSelector((state) => state.agents);
+  const initializedRef = useRef(false);
   const [viewType, setViewType] = useState("Grid");
 
   useEffect(() => {
     // Only initialize agents once
-    if (initialAgents.length > 0) {
+    if (!initializedRef.current && initialAgents.length > 0) {
       dispatch(initializeAgents(initialAgents));
+      initializedRef.current = true;
     }
   }, [dispatch, initialAgents]);
+
+  // Use filteredAgents if store is initialized, otherwise use initialAgents for SSR
+  const agentsToRender = initializedRef.current
+    ? filteredAgents
+    : initialAgents;
 
   if (loading) {
     return <LoadingSpinner />;
@@ -42,13 +50,18 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
         </p>
       </div>
 
+      {/* Filters */}
+      <div className="mb-8">
+        <AgentFilters />
+      </div>
+
       {/* Results Count */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <p
-          key={initialAgents.length} // Re-animate when count changes
+          key={agentsToRender.length} // Re-animate when count changes
           className="text-sm text-muted-foreground"
         >
-          Showing {initialAgents.length} of {initialAgents.length} agents
+          Showing {agentsToRender.length} of {agentsToRender.length} agents
         </p>
 
         <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
@@ -81,9 +94,9 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
 
       {/* Agents Grid / List */}
       <div
-        key={initialAgents.length} // This will trigger re-animation when filter results change
+        key={agentsToRender.length} // This will trigger re-animation when filter results change
       >
-        {initialAgents.length > 0 ? (
+        {agentsToRender.length > 0 ? (
           <div
             className={`gap-4 sm:gap-6 ${
               viewType === "Grid"
@@ -91,7 +104,7 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
                 : "w-full lg:w-2/3 mx-auto flex flex-col"
             }`}
           >
-            {initialAgents.map((agent) => (
+            {agentsToRender.map((agent) => (
               <AgentCard key={agent.id} agent={agent} />
             ))}
           </div>
