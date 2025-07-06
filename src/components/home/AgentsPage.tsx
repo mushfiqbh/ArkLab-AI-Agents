@@ -10,6 +10,7 @@ import { LoadingSpinner } from "@/components/general/LoadingSpinner";
 import { Agent } from "@/types/agent";
 import { AgentDetailsModal } from "./AgentDetailsModal";
 import { AgentFilters } from "./AgentFilters";
+import { motion } from "framer-motion";
 
 interface AgentsPageProps {
   initialAgents: Agent[];
@@ -40,31 +41,69 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-4">
+      <motion.div
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.6,
+          type: "spring",
+          stiffness: 100,
+          damping: 20,
+        }}
+        className="text-center mb-8"
+      >
+        <motion.h1
+          className="text-4xl font-bold text-foreground mb-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
           AI Agents Catalog
-        </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        </motion.h1>
+        <motion.p
+          className="text-xl text-muted-foreground max-w-2xl mx-auto"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
           Discover and explore our comprehensive collection of AI agents
           designed to streamline your business operations
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* Filters */}
-      <div className="mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mb-8"
+      >
         <AgentFilters />
-      </div>
+      </motion.div>
 
       {/* Results Count */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <p
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6"
+      >
+        <motion.p
           key={agentsToRender.length} // Re-animate when count changes
           className="text-sm text-muted-foreground"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3 }}
         >
-          Showing {agentsToRender.length} of {agentsToRender.length} agents
-        </p>
+          Showing {agentsToRender.length} of {initialAgents.length} agents
+        </motion.p>
 
-        <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+        <motion.div
+          className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5, duration: 0.3 }}
+        >
           <span className="hidden sm:inline">View:</span>
           <Button
             onClick={() => setViewType("Grid")}
@@ -89,27 +128,38 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
           >
             List
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Agents Grid / List */}
-      <div
+      <motion.div
         key={agentsToRender.length} // This will trigger re-animation when filter results change
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
       >
         {agentsToRender.length > 0 ? (
-          <div
+          <motion.div
             className={`gap-4 sm:gap-6 ${
               viewType === "Grid"
                 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 : "w-full lg:w-2/3 mx-auto flex flex-col"
             }`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
           >
-            {agentsToRender.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
+            {agentsToRender.map((agent, index) => (
+              <AgentCard key={agent.id} agent={agent} index={index} />
             ))}
-          </div>
+          </motion.div>
         ) : (
-          <div className="text-center py-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="text-center py-12"
+          >
             <div className="text-muted-foreground">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-muted flex items-center justify-center">
                 <Search className="w-8 h-8" />
@@ -120,9 +170,9 @@ export function AgentsPage({ initialAgents }: AgentsPageProps) {
                 you&apos;re looking for
               </p>
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       {/* Agent Details Modal */}
       <AgentDetailsModal />
