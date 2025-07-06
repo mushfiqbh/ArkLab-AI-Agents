@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -137,10 +138,20 @@ export function AgentFilters() {
     filters.pricingModel;
 
   return (
-    <div className="bg-card p-4 sm:p-6 rounded-lg border shadow-sm">
+    <motion.div
+      className="bg-card p-4 sm:p-6 rounded-lg border shadow-sm"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className="flex flex-col gap-4">
         {/* Search Input */}
-        <div className="w-full relative">
+        <motion.div
+          className="w-full relative"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search agents by name or description..."
@@ -148,12 +159,22 @@ export function AgentFilters() {
             onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
           />
-        </div>
+        </motion.div>
 
         {/* Filter Row */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <motion.div
+          className="flex flex-col sm:flex-row gap-3"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           {/* Status Filter */}
-          <div className="flex-1 min-w-[150px]">
+          <motion.div
+            className="flex-1 min-w-[150px]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <Popover open={statusOpen} onOpenChange={setStatusOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -165,16 +186,25 @@ export function AgentFilters() {
                     Status{" "}
                     {filters.status.length > 0 && `(${filters.status.length})`}
                   </div>
-                  <div>
+                  <motion.div
+                    animate={{ rotate: statusOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <ChevronDown className="h-4 w-4" />
-                  </div>
+                  </motion.div>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[200px] p-0">
                 <div className="p-4">
                   <div className="space-y-2">
-                    {statuses.map((status) => (
-                      <div key={status} className="flex items-center space-x-2">
+                    {statuses.map((status, index) => (
+                      <motion.div
+                        key={status}
+                        className="flex items-center space-x-2"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                      >
                         <Checkbox
                           id={`status-${status}`}
                           checked={filters.status.includes(status)}
@@ -188,16 +218,21 @@ export function AgentFilters() {
                         >
                           {status}
                         </label>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
               </PopoverContent>
             </Popover>
-          </div>
+          </motion.div>
 
           {/* Category Filter */}
-          <div className="flex-1 min-w-[150px]">
+          <motion.div
+            className="flex-1 min-w-[150px]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
             <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -210,18 +245,24 @@ export function AgentFilters() {
                     {filters.category.length > 0 &&
                       `(${filters.category.length})`}
                   </div>
-                  <div>
+                  <motion.div
+                    animate={{ rotate: categoryOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <ChevronDown className="h-4 w-4" />
-                  </div>
+                  </motion.div>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[200px] p-0">
                 <div className="p-4">
                   <div className="space-y-2">
-                    {categories.map((category) => (
-                      <div
+                    {categories.map((category, index) => (
+                      <motion.div
                         key={category}
                         className="flex items-center space-x-2"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
                       >
                         <Checkbox
                           id={`category-${category}`}
@@ -236,16 +277,21 @@ export function AgentFilters() {
                         >
                           {category}
                         </label>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
               </PopoverContent>
             </Popover>
-          </div>
+          </motion.div>
 
           {/* Pricing Filter */}
-          <div className="flex-1 min-w-[150px]">
+          <motion.div
+            className="flex-1 min-w-[150px]"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
             <Select
               value={filters.pricingModel || "all"}
               onValueChange={handlePricingChange}
@@ -262,24 +308,31 @@ export function AgentFilters() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </motion.div>
 
           {/* Clear Filters Button */}
-          {hasActiveFilters && (
-            <div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleClearFilters}
-                className="flex items-center gap-2 whitespace-nowrap hover:bg-destructive hover:text-destructive-foreground transition-all duration-200"
+          <AnimatePresence>
+            {hasActiveFilters && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.2 }}
               >
-                <X className="h-4 w-4" />
-                Clear All
-              </Button>
-            </div>
-          )}
-        </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleClearFilters}
+                  className="flex items-center gap-2 whitespace-nowrap hover:bg-destructive hover:text-destructive-foreground transition-all duration-200"
+                >
+                  <X className="h-4 w-4" />
+                  Clear All
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
