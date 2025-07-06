@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Agent, AgentState } from "@/types/agent";
+import { fetchAgentsData } from "@/lib/data-fetching";
 
 export const fetchAgents = createAsyncThunk("agents/fetchAgents", async () => {
   // Use the centralized data fetching utility
-  // Logic will be implemented later
-  return [];
+  return fetchAgentsData();
 });
 
 const initialState: AgentState = {
