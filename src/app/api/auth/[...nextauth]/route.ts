@@ -1,6 +1,6 @@
-import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import type { NextAuthOptions } from "next-auth"
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import type { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -12,19 +12,28 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
-        token.accessToken = account.access_token
+        return {
+          ...token,
+          accessToken: account.access_token,
+        };
       }
-      return token
+      return token;
     },
-    async session({ session }) {
-      return session
+    async session({ session, token }) {
+      if (!token.accessToken) {
+        return session;
+      }
+      return {
+        ...session,
+        accessToken: token.accessToken,
+      };
     },
   },
   pages: {
-    signIn: '/auth/signin',
+    signIn: "/auth/signin",
   },
-}
+};
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
