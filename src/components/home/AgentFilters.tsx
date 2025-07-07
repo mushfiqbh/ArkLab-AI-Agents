@@ -139,199 +139,215 @@ export function AgentFilters() {
 
   return (
     <motion.div
-      className="bg-card p-4 sm:p-6 rounded-lg border shadow-sm"
+      className="relative overflow-hidden"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="flex flex-col gap-4">
-        {/* Search Input */}
-        <motion.div
-          className="w-full relative"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search agents by name or description..."
-            value={filters.search}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-          />
-        </motion.div>
+      {/* Background with glass effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/80 via-blue-50/80 to-purple-50/80 dark:from-slate-800/80 dark:via-slate-700/80 dark:to-slate-800/80 backdrop-blur-sm" />
 
-        {/* Filter Row */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          {/* Status Filter */}
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-2xl opacity-60" />
+      <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-2xl opacity-60" />
+
+      {/* Border gradient */}
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-200/50 via-purple-200/50 to-pink-200/50 dark:from-blue-800/50 dark:via-purple-800/50 dark:to-pink-800/50 p-[1px]">
+        <div className="w-full h-full bg-white/90 dark:bg-slate-900/90 rounded-xl" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 p-6 sm:p-8">
+        <div className="flex flex-col gap-6">
+          {/* Search Input */}
           <motion.div
-            className="flex-1 min-w-[150px]"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            className="w-full relative"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
           >
-            <Popover open={statusOpen} onOpenChange={setStatusOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-between hover:bg-accent transition-all duration-200"
-                >
-                  <div className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
-                    Status{" "}
-                    {filters.status.length > 0 && `(${filters.status.length})`}
-                  </div>
-                  <motion.div
-                    animate={{ rotate: statusOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </motion.div>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <div className="p-4">
-                  <div className="space-y-2">
-                    {statuses.map((status, index) => (
-                      <motion.div
-                        key={status}
-                        className="flex items-center space-x-2"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
-                        <Checkbox
-                          id={`status-${status}`}
-                          checked={filters.status.includes(status)}
-                          onCheckedChange={(checked) =>
-                            handleStatusChange(status, checked as boolean)
-                          }
-                        />
-                        <label
-                          htmlFor={`status-${status}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {status}
-                        </label>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search agents by name or description..."
+              value={filters.search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="pl-10 transition-all duration-200 focus:ring-2 focus:ring-primary/20 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-blue-200/50 dark:border-blue-800/50"
+            />
           </motion.div>
 
-          {/* Category Filter */}
+          {/* Filter Row */}
           <motion.div
-            className="flex-1 min-w-[150px]"
+            className="flex flex-col sm:flex-row gap-4"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.2 }}
           >
-            <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-between hover:bg-accent transition-all duration-200"
-                >
-                  <div className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
-                    Category{" "}
-                    {filters.category.length > 0 &&
-                      `(${filters.category.length})`}
-                  </div>
-                  <motion.div
-                    animate={{ rotate: categoryOpen ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </motion.div>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <div className="p-4">
-                  <div className="space-y-2">
-                    {categories.map((category, index) => (
-                      <motion.div
-                        key={category}
-                        className="flex items-center space-x-2"
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
-                      >
-                        <Checkbox
-                          id={`category-${category}`}
-                          checked={filters.category.includes(category)}
-                          onCheckedChange={(checked) =>
-                            handleCategoryChange(category, checked as boolean)
-                          }
-                        />
-                        <label
-                          htmlFor={`category-${category}`}
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          {category}
-                        </label>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </motion.div>
-
-          {/* Pricing Filter */}
-          <motion.div
-            className="flex-1 min-w-[150px]"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Select
-              value={filters.pricingModel || "all"}
-              onValueChange={handlePricingChange}
+            {/* Status Filter */}
+            <motion.div
+              className="flex-1 min-w-[150px]"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              <SelectTrigger className="transition-all duration-200 hover:bg-accent">
-                <SelectValue placeholder="Pricing Model" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Pricing Models</SelectItem>
-                {pricingModels.map((pricing) => (
-                  <SelectItem key={pricing} value={pricing}>
-                    {pricing}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </motion.div>
+              <Popover open={statusOpen} onOpenChange={setStatusOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-between hover:bg-accent transition-all duration-200 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300 dark:hover:border-blue-700"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Filter className="h-4 w-4" />
+                      Status{" "}
+                      {filters.status.length > 0 &&
+                        `(${filters.status.length})`}
+                    </div>
+                    <motion.div
+                      animate={{ rotate: statusOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </motion.div>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <div className="p-4">
+                    <div className="space-y-2">
+                      {statuses.map((status, index) => (
+                        <motion.div
+                          key={status}
+                          className="flex items-center space-x-2"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                        >
+                          <Checkbox
+                            id={`status-${status}`}
+                            checked={filters.status.includes(status)}
+                            onCheckedChange={(checked) =>
+                              handleStatusChange(status, checked as boolean)
+                            }
+                          />
+                          <label
+                            htmlFor={`status-${status}`}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            {status}
+                          </label>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </motion.div>
 
-          {/* Clear Filters Button */}
-          <AnimatePresence>
-            {hasActiveFilters && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.2 }}
+            {/* Category Filter */}
+            <motion.div
+              className="flex-1 min-w-[150px]"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Popover open={categoryOpen} onOpenChange={setCategoryOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-between hover:bg-accent transition-all duration-200 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300 dark:hover:border-blue-700"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Filter className="h-4 w-4" />
+                      Category{" "}
+                      {filters.category.length > 0 &&
+                        `(${filters.category.length})`}
+                    </div>
+                    <motion.div
+                      animate={{ rotate: categoryOpen ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </motion.div>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <div className="p-4">
+                    <div className="space-y-2">
+                      {categories.map((category, index) => (
+                        <motion.div
+                          key={category}
+                          className="flex items-center space-x-2"
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                        >
+                          <Checkbox
+                            id={`category-${category}`}
+                            checked={filters.category.includes(category)}
+                            onCheckedChange={(checked) =>
+                              handleCategoryChange(category, checked as boolean)
+                            }
+                          />
+                          <label
+                            htmlFor={`category-${category}`}
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            {category}
+                          </label>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </motion.div>
+
+            {/* Pricing Filter */}
+            <motion.div
+              className="flex-1 min-w-[150px]"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Select
+                value={filters.pricingModel || "all"}
+                onValueChange={handlePricingChange}
               >
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleClearFilters}
-                  className="flex items-center gap-2 whitespace-nowrap hover:bg-destructive hover:text-destructive-foreground transition-all duration-200"
+                <SelectTrigger className="transition-all duration-200 hover:bg-accent bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-blue-200/50 dark:border-blue-800/50 hover:border-blue-300 dark:hover:border-blue-700">
+                  <SelectValue placeholder="Pricing Model" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Pricing Models</SelectItem>
+                  {pricingModels.map((pricing) => (
+                    <SelectItem key={pricing} value={pricing}>
+                      {pricing}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </motion.div>
+
+            {/* Clear Filters Button */}
+            <AnimatePresence>
+              {hasActiveFilters && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <X className="h-4 w-4" />
-                  Clear All
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleClearFilters}
+                    className="flex items-center gap-2 whitespace-nowrap hover:bg-destructive hover:text-destructive-foreground transition-all duration-200 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-red-200/50 dark:border-red-800/50 hover:border-red-300 dark:hover:border-red-700"
+                  >
+                    <X className="h-4 w-4" />
+                    Clear All
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );

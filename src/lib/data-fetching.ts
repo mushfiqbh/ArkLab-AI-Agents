@@ -33,7 +33,6 @@ export async function fetchAgentsData(): Promise<Agent[]> {
       }
     });
 
-    console.log(`Successfully fetched ${agents.length} agents`);
     return agents;
   } catch (error) {
     console.error("Failed to fetch agents:", error);
@@ -48,7 +47,6 @@ export async function fetchAgentsData(): Promise<Agent[]> {
 export async function getServerSideAgents(): Promise<Agent[]> {
   try {
     const agents = await fetchAgentsData();
-    console.log(`Server-side fetched ${agents} agents`);
     return agents;
   } catch (error) {
     console.error("Server-side agent fetch failed:", error);
