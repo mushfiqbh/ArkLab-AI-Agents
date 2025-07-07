@@ -43,7 +43,7 @@ export function AgentCard({ agent, index }: AgentCardProps) {
       whileTap={{ scale: 0.97 }}
       className="h-full group"
     >
-      <Card className="h-full flex flex-col hover:shadow-2xl transition-all duration-300 overflow-hidden relative bg-gradient-to-br from-white/90 via-white/70 to-slate-50/80 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-slate-900/80 backdrop-blur-enhanced card-glow card-shine card-float border-none">
+      <Card className="h-full flex flex-col hover:shadow-2xl transition-all duration-300 overflow-hidden relative bg-gradient-to-br from-white/90 via-white/70 to-slate-50/80 dark:from-slate-800/90 dark:via-slate-800/70 dark:to-slate-900/80 backdrop-blur-enhanced card-glow card-shine card-float border border-slate-200/50 hover:border-slate-300/80 dark:border-slate-700/30 dark:hover:border-slate-600/50">
         {/* Animated gradient overlay */}
         <div className="absolute inset-0 animated-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -124,31 +124,31 @@ export function AgentCard({ agent, index }: AgentCardProps) {
               transition={{ delay: index * 0.1 + 0.4 }}
             >
               <div className="flex flex-col items-start gap-3 p-3 rounded-lg bg-gradient-to-r from-white/80 via-slate-50/60 to-white/40 dark:from-slate-700/60 dark:via-slate-800/40 dark:to-slate-700/30 backdrop-blur-sm shadow-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex-shrink-0 shadow-sm" />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              Category:
-            </span>
-            <Badge
-              variant="outline"
-              className="text-xs bg-white/90 dark:bg-slate-800/90 border-slate-300/60 dark:border-slate-600/60 backdrop-blur-sm"
-            >
-              {agent.category}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex-shrink-0 shadow-sm" />
-            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-              Pricing:
-            </span>
-            <Badge
-              className={`${getPricingColor(
-                agent.pricingModel
-              )} text-xs border shadow-sm font-medium backdrop-blur-sm`}
-            >
-              {agent.pricingModel}
-            </Badge>
-          </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex-shrink-0 shadow-sm" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Category:
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className="text-xs bg-white/90 dark:bg-slate-800/90 border-slate-300/60 dark:border-slate-600/60 backdrop-blur-sm"
+                  >
+                    {agent.category}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex-shrink-0 shadow-sm" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Pricing:
+                  </span>
+                  <Badge
+                    className={`${getPricingColor(
+                      agent.pricingModel
+                    )} text-xs border shadow-sm font-medium backdrop-blur-sm`}
+                  >
+                    {agent.pricingModel}
+                  </Badge>
+                </div>
               </div>
             </motion.div>
           </CardContent>
@@ -162,20 +162,20 @@ export function AgentCard({ agent, index }: AgentCardProps) {
               whileTap={{ scale: 0.98 }}
             >
               <Button
-          variant="outline"
-          className="w-full transition-all duration-300 hover:opacity-80 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-purple-500 group-hover:text-white group-hover:shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-none text-slate-700 dark:text-slate-300 font-medium shadow-sm"
-          onClick={() => dispatch(setSelectedAgent(agent))}
+                variant="outline"
+                className="w-full transition-all duration-300 hover:opacity-80 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-purple-500 group-hover:text-white group-hover:shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border-none text-slate-700 dark:text-slate-300 font-medium shadow-sm"
+                onClick={() => dispatch(setSelectedAgent(agent))}
               >
-          <span className="flex items-center gap-2">
-            View Details
-            <motion.span
-              className="text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"
-              initial={{ x: -2 }}
-              animate={{ x: 0 }}
-            >
-              →
-            </motion.span>
-          </span>
+                <span className="flex items-center gap-2">
+                  View Details
+                  <motion.span
+                    className="text-xs opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200"
+                    initial={{ x: -2 }}
+                    animate={{ x: 0 }}
+                  >
+                    →
+                  </motion.span>
+                </span>
               </Button>
             </motion.div>
           </CardFooter>
