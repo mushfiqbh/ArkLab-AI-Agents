@@ -1,3 +1,6 @@
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { Footer } from "@/components/general/Footer";
+import { Header } from "@/components/general/Header";
 import { AgentsPage } from "@/components/home/AgentsPage";
 import { getServerSideAgents } from "@/lib/data-fetching";
 import { getMetadataFromSearchParams } from "@/lib/metadata";
@@ -34,5 +37,13 @@ export default async function Home() {
   // Server-side data fetching
   const agents = await getServerSideAgents();
 
-  return <AgentsPage initialAgents={agents} />;
+  return (
+    <main className="min-h-screen bg-background">
+      <Header />
+      <ProtectedRoute requireAuth={true}>
+        <AgentsPage initialAgents={agents} />
+      </ProtectedRoute>
+      <Footer />
+    </main>
+  );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeToggle } from "./ThemeToggle";
+import { AuthPopover } from "../auth/AuthPopover";
 import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -25,6 +26,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-4">
+          <AuthPopover />
           <ThemeToggle />
         </div>
       </div>
