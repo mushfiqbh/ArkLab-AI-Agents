@@ -1,3 +1,5 @@
+"use client";
+
 import { ThemeToggle } from "./ThemeToggle";
 import { AuthPopover } from "../auth/AuthPopover";
 import { Sparkles } from "lucide-react";

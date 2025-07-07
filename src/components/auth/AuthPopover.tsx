@@ -52,7 +52,7 @@ export function AuthPopover() {
           ) : (
             <div className="flex items-center gap-2">
               <User className="w-4 h-4" />
-              <span className="hidden sm:inline">Sign In</span>
+              <span>Sign In</span>
             </div>
           )}
         </Button>
@@ -110,11 +110,7 @@ export function AuthPopover() {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
               </div>
             ) : (
-              <Button
-                onClick={handleSignIn}
-                className="w-full"
-                size="lg"
-              >
+              <Button onClick={handleSignIn} className="w-full" size="lg">
                 <svg
                   className="w-5 h-5 mr-2"
                   viewBox="0 0 24 24"
@@ -129,7 +125,8 @@ export function AuthPopover() {
               </Button>
             )}
             <div className="text-xs text-muted-foreground text-center">
-              By signing in, you agree to our Terms of Service and Privacy Policy
+              By signing in, you agree to our Terms of Service and Privacy
+              Policy
             </div>
           </div>
         )}
