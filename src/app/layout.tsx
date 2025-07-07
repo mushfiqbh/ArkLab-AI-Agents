@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/provider/ThemeProvider";
-import { Header } from "@/components/general/Header";
-import { Footer } from "@/components/general/Footer";
 import { ReduxProvider } from "@/components/provider/ReduxProvider";
+import AuthProvider from "@/components/provider/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,13 +41,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider>
-          <ReduxProvider>
-            <main className="min-h-screen bg-background">
-              <Header />
-              {children}
-              <Footer />
-            </main>
-          </ReduxProvider>
+          <AuthProvider>
+            <ReduxProvider>{children}</ReduxProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
